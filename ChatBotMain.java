@@ -20,6 +20,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.net.URL;
+import java.net.URLConnection;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Random;
 
 import javax.swing.JTextArea;
@@ -27,13 +31,16 @@ import javax.swing.JScrollBar;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.AdjustmentEvent;
 
-public class ChatBotMain extends JFrame {
+public class ChatBotMain extends JFrame implements ActionListener{
 
 	private JPanel contentPane;
 	private JTextField textField_1;
 	private JButton btnSend;
 	private String main="";
 	JTextArea textArea;
+	LocalTime time=LocalTime.now();
+	LocalDate date=LocalDate.now();
+	Random random=new Random();
 	private JScrollBar scrollBar;
 
 	/**
@@ -95,13 +102,14 @@ public class ChatBotMain extends JFrame {
 		textArea.setBounds(0, 0, 396, 554);
 		contentPane.add(textArea);
 		
-		/*	scrollBar = new JScrollBar();
-	//	scrollBar.setvie
+		scrollBar = new JScrollBar();
+		scrollBar.setVisible(true); 
+
 		scrollBar.addAdjustmentListener(new AdjustmentListener() {
 			   public void adjustmentValueChanged(AdjustmentEvent e) {
 			}
 		});
-		scrollBar.setBounds(395, 0, 27, 554);
+		scrollBar.setBounds(395, 0, 21, 554);
 		contentPane.add(scrollBar,BorderLayout.EAST);
 		
 	JScrollBar scrollBar = new JScrollBar();
@@ -110,7 +118,7 @@ public class ChatBotMain extends JFrame {
 			}
 		});
 			scrollBar.setBounds(395, 0, 21, 554);
-		contentPane.add(scrollBar);*/
+		contentPane.add(scrollBar);
 		
 		
 	}
@@ -119,7 +127,7 @@ public class ChatBotMain extends JFrame {
 	{
 		
 		String query=textField_1.getText();
-		textArea.append(" You-> "+query+"\n");
+		textArea.append(" You: "+query+"\n");
 		//query.trim();
 		query=query.toLowerCase();
 		if(query.contains("clear screen")||query.contains("clr")||query.contains("cls"))
@@ -217,7 +225,30 @@ public class ChatBotMain extends JFrame {
 				ai("Why? Don't waste your time.");
 			}
 		}
-		else{
+		else if(query.contains("time"))
+		{
+		    String ctime=new String();
+			if(time.getHour()>12)
+			{
+				int hour=time.getHour()-12;
+				ctime=ctime+hour+":"+time.getMinute()+":"+time.getSecond()+" PM";
+			}
+			
+			else
+			{
+				
+				ctime=ctime+time.getHour()+":"+time.getMinute()+":"+time.getSecond()+" AM";
+			}
+			ai(ctime);	
+		}
+		else if(query.contains("date")||query.contains("month")||query.contains("year")||query.contains("day"))
+		{
+		
+			String cdate=new String();
+			cdate=cdate + date.getDayOfWeek()+","+date.getDayOfMonth()+" "+date.getMonth()+" "+date.getYear();
+			ai(cdate);
+		}
+		else if{
 			Random rand=new Random();
 			int a=rand.nextInt(4);
 			if(a==0)
@@ -237,12 +268,31 @@ public class ChatBotMain extends JFrame {
 				ai("???");
 			}
 		}
+		else
+		{
+			try
+			{
+				try
+				{
+					URL url=new URL("https://google.co.in");
+					URLConnection connection=url.openConnection();
+					connection.connect();
+					ai("Here some results for you ...");
+					java.awt.Desktop.getDesktop().browse(java.net.URI.create("https://www.google.com/search?q="+query.replace(" ", "+")+"&btnG=Google+Search"));
+			
+				}
+				catch(Exception ee)
+				{
+					ai("Connect with internet connection for get better results...");
+				}
+				
+			}
+		}
 	}
 	
-
 	void ai(String s)
 	{
-		textArea.append(" AI->"+s+"\n\n");
+		textArea.append(" ChatBot: "+s+"\n\n");
 		textField_1.setText("");
 	}
 }
