@@ -248,26 +248,6 @@ public class ChatBotMain extends JFrame implements ActionListener{
 			cdate=cdate + date.getDayOfWeek()+","+date.getDayOfMonth()+" "+date.getMonth()+" "+date.getYear();
 			ai(cdate);
 		}
-		else if{
-			Random rand=new Random();
-			int a=rand.nextInt(4);
-			if(a==0)
-			{
-				ai("Sorry, I can't understand you");
-			}
-			else if(a==1)
-			{
-				ai("Please state it correctly.");
-			}
-			else if(a==2)
-			{
-				ai("I didn't understand that. Can you please rephrase?");
-			}
-			else if(a==3)
-			{
-				ai("???");
-			}
-		}
 		else
 		{
 			try
@@ -286,11 +266,32 @@ public class ChatBotMain extends JFrame implements ActionListener{
 					ai("Connect with internet connection for get better results...");
 				}
 				
+				catch(Exception eee)
+		        {
+					Random rand=new Random();
+					int a=rand.nextInt(4);
+					if(a==0)
+					{
+						ai("Sorry, I can't understand you");
+					}
+					else if(a==1)
+					{
+						ai("Please state it correctly.");
+					}
+					else if(a==2)
+					{
+						ai("I didn't understand that. Can you please rephrase?");
+					}
+					else if(a==3)
+					{
+						ai("???");
+					}
+			    }
 			}
 		}
 	}
 	
-	void ai(String s)
+	public static void ai(String s)
 	{
 		textArea.append(" ChatBot: "+s+"\n\n");
 		textField_1.setText("");
